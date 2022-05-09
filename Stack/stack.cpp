@@ -1,4 +1,7 @@
 #include "stack.h"
+#include <iostream>
+
+using namespace std;
 
 STACK::STACK() {
     top=-1;
@@ -20,7 +23,9 @@ int STACK::isFull() {
 
 int STACK::push(int i) {
     if(isFull()) {
-        return -304;
+        cout << "STACK FULL ERROR -30424\n";
+        // This is so we know if the stack has reached its limit
+        return -30424;
     }
     ++top;
     num[top]=i;
@@ -30,7 +35,9 @@ int STACK::push(int i) {
 int STACK::pop() {
     int temp;
     if(isEmpty())
-        return -304;
+        cout << "STACK EMPTY ERROR -30425\n";
+        // This error is so we know if the stack is empty
+        return -30425;
     temp=num[top];
     --top;
     return temp;
