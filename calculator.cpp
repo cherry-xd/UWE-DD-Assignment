@@ -21,37 +21,37 @@ int eval(std::string expr) {
         if (ch == '/' || ch == '*' || ch == '+' || ch == '-') {
             cout << "OPERATOR FOUND: " << ch << "\n";
             int sum = 0;
+            int int2 = stack.pop();
             int int1 = stack.pop();
             cout << "INT 1 IS " << int1 << "\n";
-            int int2 = stack.pop();
             cout << "INT 2 IS " << int2 << "\n";
             switch (ch) {
-                case '+':
-                    sum = int2 + int1;
-                    break;
-                case '-':
-                    sum = int2 - int1;
-                    break;
-                case '*': 
-                    sum = int2 * int1;
-                    break;
-                case '/': 
-                    sum = int2 / int1;
-                    break;
+            case '+':
+                sum = int2 + int1;
+                break;
+            case '-':
+                sum = int2 - int1;
+                break;
+            case '*':
+                sum = int2 * int1;
+                break;
+            case '/':
+                sum = int2 / int1;
+                break;
             }
             stack.push(sum);
             cout << "SUM IS " << sum << "\n";
         }
         else {
-            if(ch == ' ' && digits > 0) {
+            if (ch == ' ' && digits > 0) {
                 std::list<int> digit;
-                for(int j = 0; j < digits; j++) {
+                for (int j = 0; j < digits; j++) {
                     digit.push_back(stack.pop());
                 }
                 string number;
-                for(int k = 0; k < digits; k++) {
-                    int temp = digit.front();
-                    digit.pop_front();
+                for (int k = 0; k < digits; k++) {
+                    int temp = digit.back();
+                    digit.pop_back();
                     number = number + std::to_string(temp);
                 }
                 stack.push(stoi(number));
@@ -79,7 +79,7 @@ int eval(std::string expr) {
 }
 
 int main() {
-    std::string expr = "22 11 +";
+    std::string expr = "10 34 +";
     int result = eval(expr);
     cout << result;
 }
