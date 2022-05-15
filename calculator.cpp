@@ -16,70 +16,61 @@ int eval(std::string expr) {
     cout << "expr length: " << expr.length() << "\n";
 
     int digits = 0;
+    int sum = 0;
     for (int i = 0; i < expr.length(); i++) {
         char ch = expr[i];
         if (ch == '/' || ch == '*' || ch == '+' || ch == '-') {
             cout << "OPERATOR FOUND: " << ch << "\n";
-            int sum = 0;
             int int2 = stack.pop();
             int int1 = stack.pop();
             cout << "INT 1 IS " << int1 << "\n";
             cout << "INT 2 IS " << int2 << "\n";
             switch (ch) {
-            case '+':
-                sum = int2 + int1;
-                break;
-            case '-':
-                sum = int2 - int1;
-                break;
-            case '*':
-                sum = int2 * int1;
-                break;
-            case '/':
-                sum = int2 / int1;
-                break;
+                case '+':
+                    sum = int1 + int2;
+                    break;
+                case '-':
+                    sum = int1 - int2;
+                    break;
+                case '*':
+                    sum = int1 * int2;
+                    break;
+                case '/':
+                    sum = int1 / int2;
+                    break;
             }
             stack.push(sum);
             cout << "SUM IS " << sum << "\n";
         }
+        /* The code below is to figure out when the digits should be concatenated into a number */
+        if (ch == ' ' && digits > 0) {
+            std::list<int> digit;
+            for (int j = 0; j < digits; j++) {
+                digit.push_back(stack.pop());
+            }
+            string number;
+            for (int k = 0; k < digits; k++) {
+                int temp = digit.back();
+                digit.pop_back();
+                number = number + std::to_string(temp);
+            }
+            stack.push(stoi(number));
+            digits = 0;
+        }
         else {
-            if (ch == ' ' && digits > 0) {
-                std::list<int> digit;
-                for (int j = 0; j < digits; j++) {
-                    digit.push_back(stack.pop());
-                }
-                string number;
-                for (int k = 0; k < digits; k++) {
-                    int temp = digit.back();
-                    digit.pop_back();
-                    number = number + std::to_string(temp);
-                }
-                stack.push(stoi(number));
-                digits = 0;
-            }
-            else {
-                cout << "NUMBER FOUND: " << ch << "\n";
-                stack.push(atoi(&ch));
-                digits++;
-            }
+            cout << "NUMBER FOUND: " << ch << "\n";
+            stack.push(atoi(&ch));
+            digits++;
         }
     }
 
-    cout << "GETTING FINAL SUM\n";
-    for (int i = 0; i < stack.size(); i++) {
-        if (stack.size() > 2) {
-            stack.push(stack.pop() + stack.pop());
-        }
-        else {
-            break;
-        }
-    }
-
-    return stack.pop();
+    return sum;
 }
 
+/* the value of 'expr' is what should be altered by the calculator as this is the string to be calculated */
+/* this is currently just at a default value */
 int main() {
-    std::string expr = "10 34 +";
+    std::string expr = "10 3 +";
     int result = eval(expr);
     cout << result;
 }
